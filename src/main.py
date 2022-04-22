@@ -4,16 +4,55 @@ import pandas as pd
 
 from dash import Dash, html, dcc
 import plotly.graph_objs as go
+import plotly.express as px
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 
+from controller import DataProvider
+
+
+
+df = DataProvider().df
+
+# TODO: set graph & axis titles
+fig = go.Figure(
+    data=[
+        go.Candlestick(x=df.index,
+                       open=df['open'],
+                       high=df['high'],
+                       low=df['low'],
+                       close=df['close'])
+    ],
+)
+
+# fig.show()
 
 app = Dash(__name__,
            external_stylesheets=[dbc.themes.BOOTSTRAP],
-        )
+           )
 
 
-app.layout = dbc.Navbar(
+def build_card():
+    return dbc.Card(
+        dbc.CardBody("This is some text within a card body"),
+        style={'height': '100px', 'wigth': '100px'},
+    )
+
+
+def build_row_cards():
+    return dbc.Row(
+        [
+            dbc.Col(build_card()),
+            dbc.Col(build_card()),
+            dbc.Col(build_card()),
+            dbc.Col(build_card()),
+        ],
+        align="center",
+        className="my-2 p-0 justify-content-between",
+    )
+
+
+app.layout = html.Div(children=[dbc.Navbar(
     dbc.Container(
         [
             html.A(
@@ -31,6 +70,34 @@ app.layout = dbc.Navbar(
             ),
         ]
     ),
+),
+    dbc.Container(
+        [
+            build_row_cards(),
+
+            dbc.Row(
+                [
+                    # dbc.Col(
+                        dcc.Graph(figure=fig, config={
+                        'displayModeBar': False, 'autosizable': True, 'displaylogo': False},)
+                        # , width=8,),
+                    # dbc.Col([
+                    #     dbc.Button("Go somewhere", color="primary",
+                    #                className='my-2', style={'width': '100%'}),
+                    #     dbc.Button("Go somewhere", color="danger",
+                    #                className='my-2', style={'width': '100%'}),
+                    #     dbc.Button("Go somewhere", color="warning",
+                    #                className='my-2', style={'width': '100%'}),
+                    #     dbc.Button("Go somewhere", color="success",
+                    #                className='my-2', style={'width': '100%'}),
+                    # ],
+                    #     className='m-auto ',
+                    #     width=4,
+                    # ),
+                ]
+            )]
+)
+]
 )
 
 

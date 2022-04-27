@@ -11,19 +11,19 @@ import dash_bootstrap_components as dbc
 from controller import DataProvider
 
 
-
-df = DataProvider().df
+data_provider = DataProvider()
 
 # TODO: set graph & axis titles
-fig = go.Figure(
-    data=[
-        go.Candlestick(x=df.index,
-                       open=df['open'],
-                       high=df['high'],
-                       low=df['low'],
-                       close=df['close'])
-    ],
-)
+fig = data_provider.get_strategy_graph()
+# go.Figure(
+#     data=[
+#         go.Candlestick(x=df.index,
+#                        open=df['open'],
+#                        high=df['high'],
+#                        low=df['low'],
+#                        close=df['close'])
+#     ],
+# )
 
 # fig.show()
 
@@ -77,23 +77,24 @@ app.layout = html.Div(children=[dbc.Navbar(
 
             dbc.Row(
                 [
-                    # dbc.Col(
+                    dbc.Col(
                         dcc.Graph(figure=fig, config={
                         'displayModeBar': False, 'autosizable': True, 'displaylogo': False},)
-                        # , width=8,),
-                    # dbc.Col([
-                    #     dbc.Button("Go somewhere", color="primary",
-                    #                className='my-2', style={'width': '100%'}),
-                    #     dbc.Button("Go somewhere", color="danger",
-                    #                className='my-2', style={'width': '100%'}),
-                    #     dbc.Button("Go somewhere", color="warning",
-                    #                className='my-2', style={'width': '100%'}),
-                    #     dbc.Button("Go somewhere", color="success",
-                    #                className='my-2', style={'width': '100%'}),
-                    # ],
-                    #     className='m-auto ',
-                    #     width=4,
-                    # ),
+                        , width=8,),
+                    dbc.Col([
+                        html.H6(f'{k}: {v}') for k, v in data_provider.get_strategy_summary().items()     
+                        # dbc.Button("Go somewhere", color="primary",
+                        #            className='my-2', style={'width': '100%'}),
+                        # dbc.Button("Go somewhere", color="danger",
+                        #            className='my-2', style={'width': '100%'}),
+                        # dbc.Button("Go somewhere", color="warning",
+                        #            className='my-2', style={'width': '100%'}),
+                        # dbc.Button("Go somewhere", color="success",
+                        #            className='my-2', style={'width': '100%'}),
+                    ],
+                        className='m-auto ',
+                        width=4,
+                    ),
                 ]
             )]
 )

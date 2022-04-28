@@ -16,11 +16,11 @@ class StrategyGraph:
             rangeslider_visible=True,
             rangeselector=dict(
                 buttons=list([
-                    dict(count=1, label="1min", step="minute", stepmode="backward"),
-                    dict(count=6, label="6mins", step="minute", stepmode="backward"),
-                    dict(count=1, label="1h", step="hour", stepmode="todate"),
-                    dict(count=1, label="1d", step="day", stepmode="backward"),
-                    dict(step="all")
+                    # dict(count=1, label="1day", step="day", stepmode="backward"),
+                    dict(count=2, label="week", step="month", stepmode="backward"),
+                    dict(count=7, label="month", step="month", stepmode="backward"),
+                    dict(count=7, label="year", step="all", stepmode="backward")
+                    # dict(step="all")
                 ])
             )
         )
